@@ -61,8 +61,8 @@ def edit_caption(bot, update: pyrogram.types.Message):
         if old_caption:
             # Replace other usernames with '@MS_Update_Channel'
             old_caption_with_ms_update_channel = replace_usernames_with_ms_update_channel(old_caption)
-            new_caption = f"{old_caption_with_ms_update_channel} join @MS_Update_Channel"
-            update.edit(new_caption)
+            new_caption = f"{old_caption_with_ms_update_channel}\n\n<b>〽️ Join @MS_Update_Channel</b>"
+            update.edit(new_caption, parse_mode="html")
     except pyrogram.errors.MessageNotModified:
         pass
 
