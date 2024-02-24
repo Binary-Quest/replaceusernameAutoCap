@@ -27,15 +27,15 @@ start_message = """
 <b>👋Hello {}</b>
 <b>I am an AutoCaption bot</b>
 <b>All you have to do is add me to your channel and I will show you my power</b>
-<b>@MS_Update_Channel</b>"""
+<b>@kwicbotupdates</b>"""
 
 about_message = """
-<b>• Name : <a href=https://t.me/MS_Samad>autocaption</a></b>
-<b>• Developer : <a href=https://t.me/Anmol0700>[ᴍɪɢᴜᴇʟ ᴏ’ʜᴀʀᴀ!]</a></b>
+<b>• Name : <a href=https://t.me/kwic2002>kwic autocaption</a></b>
+<b>• Developer : <a href=https://t.me/kwicbotupdates>[KWICBOT UPDATES]</a></b>
 <b>• Language : Python3</b>
 <b>• Library : Pyrogram v{version}</b>
-<b>• Updates : <a href=https://t.me/MS_Update_Channel>Click Here</a></b>
-<b>• Source Code : <a href=https://t.me/Anmol0700>Click Here</a></b>"""
+<b>• Updates : <a href=https://t.me/kwicbotupdates>Click Here</a></b>
+<b>• Source Code : <a href=https://github.com/PR0-99/CaptionBot-V1>Click Here</a></b>"""
 
 @AutoCaptionBotV1.on_message(pyrogram.filters.private & pyrogram.filters.command(["start"]))
 def start_command(bot, update):
@@ -59,23 +59,25 @@ def edit_caption(bot, update: pyrogram.types.Message):
     motech, _ = get_file_details(update)
     try:
         try:
-            # Replace other usernames with '@MS_Update_Channel'
-            file_name_without_usernames = replace_usernames_with_ms_update_channel(motech.file_name)
-            update.edit(custom_caption.format(file_name=file_name_without_usernames))
+            # Replace other usernames and links with '@MS_Update_Channel'
+            file_name_without_usernames_and_links = replace_usernames_and_links_with_ms_update_channel(motech.file_name)
+            update.edit(custom_caption.format(file_name=file_name_without_usernames_and_links))
         except pyrogram.errors.FloodWait as FloodWait:
             asyncio.sleep(FloodWait.value)
-            # Replace other usernames with '@MS_Update_Channel'
-            file_name_without_usernames = replace_usernames_with_ms_update_channel(motech.file_name)
-            update.edit(custom_caption.format(file_name=file_name_without_usernames))
+            # Replace other usernames and links with '@MS_Update_Channel'
+            file_name_without_usernames_and_links = replace_usernames_and_links_with_ms_update_channel(motech.file_name)
+            update.edit(custom_caption.format(file_name=file_name_without_usernames_and_links))
     except pyrogram.errors.MessageNotModified:
         pass
 
-def replace_usernames_with_ms_update_channel(file_name):
-    # Define a regular expression pattern for detecting usernames in file names
+def replace_usernames_and_links_with_ms_update_channel(file_name):
+    # Define a regular expression pattern for detecting usernames and links in file names
     username_pattern = re.compile(r'@[\w_]+')
+    link_pattern = re.compile(r'https?://\S+')
 
-    # Use the sub function to replace usernames with '@MS_Update_Channel'
+    # Replace usernames and links with '@MS_Update_Channel'
     clean_file_name = re.sub(username_pattern, '@MS_Update_Channel', file_name)
+    clean_file_name = re.sub(link_pattern, '@MS_Update_Channel', clean_file_name)
 
     return clean_file_name
 
@@ -103,7 +105,7 @@ def get_file_details(update: pyrogram.types.Message):
 def start_buttons(bot, update):
     bot = bot.get_me()
     buttons = [[
-        pyrogram.types.InlineKeyboardButton("Updates", url="t.me/MS_Update_Channel"),
+        pyrogram.types.InlineKeyboardButton("Updates", url="t.me/kwicbotupdates"),
         pyrogram.types.InlineKeyboardButton("About 🤠", callback_data="about")
     ], [
         pyrogram.types.InlineKeyboardButton("➕️ Add To Your Channel ➕️", url=f"http://t.me/{bot.username}?startchannel=true")
@@ -117,6 +119,6 @@ def about_buttons(bot, update):
     return pyrogram.types.InlineKeyboardMarkup(buttons)
 
 print("Telegram AutoCaption V1 Bot Start")
-print("Bot Created By https://t.me/Anmol0700")
+print("Bot Created By https://t.me/kwicbotupdates")
 
 AutoCaptionBotV1.run()
