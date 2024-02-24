@@ -16,7 +16,7 @@ try:
 except Exception as bot_token:
     print(f"⚠️ Bot Token Invalid {bot_token}")
 try:
-    custom_caption = os.environ.get("custom_caption", "")
+    custom_caption = os.environ.get("custom_caption", "`{file_name}`")
 except Exception as custom_caption:
     print(f"⚠️ Custom Caption Invalid {custom_caption}")
 
@@ -56,24 +56,49 @@ def about_callback(bot, update):
 
 @AutoCaptionBotV1.on_message(pyrogram.filters.channel)
 def edit_caption(bot, update: pyrogram.types.Message):
+    motech, _ = get_file_details(update)
     try:
-        old_caption = update.caption
-        if old_caption:
+        try:
             # Replace other usernames with '@MS_Update_Channel'
-            old_caption_with_ms_update_channel = replace_usernames_with_ms_update_channel(old_caption)
-            new_caption = f"{old_caption_with_ms_update_channel}\n\n<b>〽️ Join @MS_Update_Channel</b>"
-            update.edit(new_caption, parse_mode="html")
+            file_name_without_usernames = replace_usernames_with_ms_update_channel(motech.file_name)
+            update.edit(custom_caption.format(file_name=file_name_without_usernames))
+        except pyrogram.errors.FloodWait as FloodWait:
+            asyncio.sleep(FloodWait.value)
+            # Replace other usernames with '@MS_Update_Channel'
+            file_name_without_usernames = replace_usernames_with_ms_update_channel(motech.file_name)
+            update.edit(custom_caption.format(file_name=file_name_without_usernames))
     except pyrogram.errors.MessageNotModified:
         pass
 
-def replace_usernames_with_ms_update_channel(caption):
-    # Define a regular expression pattern for detecting usernames in captions
+def replace_usernames_with_ms_update_channel(file_name):
+    # Define a regular expression pattern for detecting usernames in file names
     username_pattern = re.compile(r'@[\w_]+')
 
     # Use the sub function to replace usernames with '@MS_Update_Channel'
-    clean_caption = re.sub(username_pattern, '@MS_Update_Channel', caption)
+    clean_file_name = re.sub(username_pattern, '@MS_Update_Channel', file_name)
 
-    return clean_caption
+    return clean_file_name
+
+def get_file_details(update: pyrogram.types.Message):
+    if update.media:
+        for message_type in (
+                "photo",
+                "animation",
+                "audio",
+                "document",
+                "video",
+                "video_note",
+                "voice",
+                # "contact",
+                # "dice",
+                # "poll",
+                # "location",
+                # "venue",
+                "sticker"
+        ):
+            obj = getattr(update, message_type)
+            if obj:
+                return obj, obj.file_id
 
 def start_buttons(bot, update):
     bot = bot.get_me()
