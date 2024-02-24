@@ -59,13 +59,13 @@ def edit_caption(bot, update: pyrogram.types.Message):
     motech, _ = get_file_details(update)
     try:
         try:
-            # Replace other usernames with '@Film_Nest'
-            file_name_without_usernames = replace_usernames_with_films_nest(motech.file_name)
+            # Replace other usernames with '@MS_Update_Channel'
+            file_name_without_usernames = replace_usernames_with_MS_Update_Channel(motech.file_name)
             update.edit(custom_caption.format(file_name=file_name_without_usernames))
         except pyrogram.errors.FloodWait as FloodWait:
             asyncio.sleep(FloodWait.value)
-            # Replace other usernames with '@Film_Nest'
-            file_name_without_usernames = replace_usernames_with_films_nest(motech.file_name)
+            # Replace other usernames with '@MS_Update_Channel'
+            file_name_without_usernames = replace_usernames_with_MS_Update_Channel(motech.file_name)
             update.edit(custom_caption.format(file_name=file_name_without_usernames))
     except pyrogram.errors.MessageNotModified:
         pass
@@ -74,8 +74,8 @@ def replace_usernames_with_films_nest(file_name):
     # Define a regular expression pattern for detecting usernames in file names
     username_pattern = re.compile(r'@[\w_]+')
 
-    # Use the sub function to replace usernames with '@Film_Nest'
-    clean_file_name = re.sub(username_pattern, '@Film_Nest', file_name)
+    # Use the sub function to replace usernames with '@MS_Update_Channel'
+    clean_file_name = re.sub(username_pattern, '@MS_Update_Channel', file_name)
 
     return clean_file_name
 
