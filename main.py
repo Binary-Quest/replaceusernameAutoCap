@@ -59,25 +59,36 @@ def edit_caption(bot, update: pyrogram.types.Message):
     motech, _ = get_file_details(update)
     try:
         try:
-            # Replace other usernames and links with '@MS_Update_Channel'
-            file_name_without_usernames_and_links = replace_usernames_and_links_with_ms_update_channel(motech.file_name)
-            update.edit(custom_caption.format(file_name=file_name_without_usernames_and_links))
+            # Replace other usernames with '@MS_Update_Channel'
+            file_name_without_usernames = replace_usernames_with_ms_update_channel(motech.file_name)
+            # Remove links from the file name
+            file_name_without_links = remove_links_from_file_name(file_name_without_usernames)
+            update.edit(custom_caption.format(file_name=file_name_without_links))
         except pyrogram.errors.FloodWait as FloodWait:
             asyncio.sleep(FloodWait.value)
-            # Replace other usernames and links with '@MS_Update_Channel'
-            file_name_without_usernames_and_links = replace_usernames_and_links_with_ms_update_channel(motech.file_name)
-            update.edit(custom_caption.format(file_name=file_name_without_usernames_and_links))
+            # Replace other usernames with '@MS_Update_Channel'
+            file_name_without_usernames = replace_usernames_with_ms_update_channel(motech.file_name)
+            # Remove links from the file name
+            file_name_without_links = remove_links_from_file_name(file_name_without_usernames)
+            update.edit(custom_caption.format(file_name=file_name_without_links))
     except pyrogram.errors.MessageNotModified:
         pass
 
-def replace_usernames_and_links_with_ms_update_channel(file_name):
-    # Define a regular expression pattern for detecting usernames and links in file names
+def replace_usernames_with_ms_update_channel(file_name):
+    # Define a regular expression pattern for detecting usernames in file names
     username_pattern = re.compile(r'@[\w_]+')
+
+    # Use the sub function to replace usernames with '@MS_Update_Channel'
+    clean_file_name = re.sub(username_pattern, '@MS_Update_Channel', file_name)
+
+    return clean_file_name
+
+def remove_links_from_file_name(file_name):
+    # Define a regular expression pattern for detecting links in file names
     link_pattern = re.compile(r'https?://\S+')
 
-    # Replace usernames and links with '@MS_Update_Channel'
-    clean_file_name = re.sub(username_pattern, '@MS_Update_Channel', file_name)
-    clean_file_name = re.sub(link_pattern, '@MS_Update_Channel', clean_file_name)
+    # Use the sub function to remove links from the file name
+    clean_file_name = re.sub(link_pattern, '', file_name)
 
     return clean_file_name
 
