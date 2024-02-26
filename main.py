@@ -30,7 +30,7 @@ start_message = """
 <b>👋Hello {}</b>
 <b>I am an AutoCaption bot</b>
 <b>All you have to do is add me to your channel and I will show you my power</b>
-<b>@Film_Nest</b>"""
+<b>@Ms_Update_channel</b>"""
 
 about_message = """
 <b>• Name : [AutoCaption V1](t.me/{username})</b>
@@ -45,7 +45,7 @@ def start_command(bot, update):
     update.reply(start_message.format(update.from_user.mention), reply_markup=start_buttons(bot, update), parse_mode=pyrogram.enums.ParseMode.HTML, disable_web_page_preview=True)
 
 @AutoCaptionBot.on_callback_query(pyrogram.filters.regex("start"))
-def start_callback(bot, update):
+def strat_callback(bot, update):
     update.message.edit(start_message.format(update.from_user.mention), reply_markup=start_buttons(bot, update.message), parse_mode=pyrogram.enums.ParseMode.HTML, disable_web_page_preview=True)
 
 @AutoCaptionBot.on_callback_query(pyrogram.filters.regex("about"))
@@ -60,10 +60,10 @@ def edit_caption(bot, update: pyrogram.types.Message):
         try:
             caption = update.caption
             if caption:
-                # Replace all usernames with @Film_Nest
-                caption = re.sub(r"@[A-Za-z0-9_]+", "@Film_Nest", caption)
+                # Replace all usernames with @Ms_Update_channel
+                caption = re.sub(r"@[A-Za-z0-9_]+", "@Ms_Update_channel", caption)
                 # Append desired text
-                caption += "\n\n<b>〽️Join @Film_Nest</b>"
+                caption += "\n\n<b>〽️Join @Ms_Update_channel</b>"
                 update.edit(caption)
         except pyrogram.errors.FloodWait as FloodWait:
             asyncio.sleep(FloodWait)
