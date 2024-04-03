@@ -34,11 +34,11 @@ start_message = """
 
 about_message = """
 <b>• Name : [AutoCaption V1](t.me/{username})</b>
-<b>• Developer : [Muhammed](https://github.com/PR0FESS0R-99)</b>
+<b>• Developer : [Binary Quest](https://t.me/binaryquest)</b>
 <b>• Language : Python3</b>
 <b>• Library : Pyrogram v{version}</b>
-<b>• Updates : <a href=https://t.me/Mo_Tech_YT>Click Here</a></b>
-<b>• Source Code : <a href=https://github.com/PR0FESS0R-99/AutoCaption-Bot>Click Here</a></b>"""
+<b>• Updates : <a href=https://t.me/BinaryQuest>Click Here</a></b>
+<b>• Source Code : <a href=https://t.me/Itz_Sahil_Official>Click Here</a></b>"""
 
 @AutoCaptionBot.on_message(pyrogram.filters.private & pyrogram.filters.command(["start"]))
 def start_command(bot, update):
@@ -61,9 +61,9 @@ def edit_caption(bot, update: pyrogram.types.Message):
             caption = update.caption
             if caption:
                 # Replace all usernames with @Ms_Update_channel
-                caption = re.sub(r"@[A-Za-z0-9_]+", "@Ms_Update_channel", caption)
+                caption = re.sub(r"@[A-Za-z0-9_]+", "@BinaryQuest", caption)
                 # Append desired text
-                caption += "\n\n<b>〽️Join @Ms_Update_channel</b>"
+                caption += "\n\n<b>〽🖤Join : @BinaryQuest ☠️</b>"
                 update.edit(caption)
         except pyrogram.errors.FloodWait as FloodWait:
             asyncio.sleep(FloodWait)
@@ -95,7 +95,7 @@ def get_file_details(update: pyrogram.types.Message):
 def start_buttons(bot, update):
     bot = bot.get_me()
     buttons = [[
-        pyrogram.types.InlineKeyboardButton("Updates", url="t.me/Mo_Tech_YT"),
+        pyrogram.types.InlineKeyboardButton("Updates", url="t.me/BinaryQuest"),
         pyrogram.types.InlineKeyboardButton("About 🤠", callback_data="about")
     ],[
         pyrogram.types.InlineKeyboardButton("➕️ Add To Your Channel ➕️", url=f"http://t.me/{bot.username}?startchannel=true")
